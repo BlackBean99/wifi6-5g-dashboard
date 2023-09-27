@@ -1,0 +1,10 @@
+spring:
+  influx:
+    url: http://localhost:8086
+    org: my-org
+    bucket: my-bucket
+    token: my-token
+    logLevel: BODY
+    readTimeout: 5s
+    writeTimeout: 10s
+    connectTimeout: 5s
