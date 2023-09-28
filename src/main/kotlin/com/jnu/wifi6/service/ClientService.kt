@@ -10,10 +10,12 @@ import org.springframework.boot.autoconfigure.influx.InfluxDbProperties
 
 @Service
 class ClientService(
+    val merakiHelper: MerakiHelper
 ) {
-    fun getUserInformation(args: Array<String>) = runBlocking {
+    fun getUserInformation(networkId: String) = runBlocking {
 
         val influxProperties = InfluxDbProperties();
+
         val influxDBClient = InfluxDBClientKotlinFactory
             .create(url = influxProperties.url,
                 username = influxProperties.user,

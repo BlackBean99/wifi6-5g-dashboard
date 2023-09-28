@@ -8,3 +8,6 @@ spring:
     readTimeout: 5s
     writeTimeout: 10s
     connectTimeout: 5s
+meraki:
+  secret: ${MERAKI_SECRET}
+  network_id: ${MERAKI_NETWORK_ID:localhost}

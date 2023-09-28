@@ -4,6 +4,6 @@ import org.springframework.boot.autoconfigure.influx.InfluxDbProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration
 
-@EnableConfigurationProperties(InfluxDbProperties::class)
+@EnableConfigurationProperties(InfluxDbProperties::class, MerakiProperties::class)
 @Configuration
 class EnableConfigProperties
