@@ -11,5 +11,5 @@ data class ClientData(
     val usageSent: Long,
     val usageRecv: Long,
     val usageTotal: Long,
-    val status: String
+    val status: String,
 )

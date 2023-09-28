@@ -14,7 +14,7 @@ interface MerakiClient {
     fun getNetworkInfo(
         @PathVariable(name = "network_id") networkId: String,
         @RequestHeader("Authorization") token: String,
-        ): List<ClientData>
+    ): List<ClientData>
 
     @GetMapping("/networks/{network_id}")
     fun getNetworkIds(

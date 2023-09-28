@@ -44,20 +44,23 @@ dependencies {
     api ("io.github.openfeign:feign-httpclient:12.1")
     api ("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4")
     implementation("com.influxdb:influxdb-client-kotlin:6.10.0")
+
+    // batch
     implementation("org.springframework.boot:spring-boot-starter-batch")
+    testImplementation("org.springframework.batch:spring-batch-test")
     implementation("org.springframework.boot:spring-boot-starter-quartz")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-web-services")
 
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
+//    implementation("org.springframework.boot:spring-boot-starter-webflux")
+//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
-    testImplementation("org.springframework.batch:spring-batch-test")
 }
 
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {

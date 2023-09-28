@@ -14,10 +14,10 @@ class MerakiHelper(
 
     fun getNetworkIds(): List<NetworkInfo> {
 //        return merakiClient.getNetworkIds();
-        return listOf();
+        return listOf()
     }
     fun getNetworkInfo(): List<ClientData> {
 //        return merakiClient.getN();
-        return listOf();
+        return listOf()
     }
 }

@@ -9,13 +9,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1")
 class WifiSyncController(
-    val clientService: ClientService
+    val clientService: ClientService,
 ) {
-
     @GetMapping("/networks/{network_id}/clients")
     fun getNetworkClients(@PathVariable("network_id") networkId: String) {
-        clientService.getUserInformation(networkId);
-    }
-
+        clientService.getUserInformation(networkId)
     }
 }
