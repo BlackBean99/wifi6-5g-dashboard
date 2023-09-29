@@ -12,21 +12,19 @@ plugins {
     id("jacoco")
 }
 
-group = "com.jnu"
-version = "0.0.1-SNAPSHOT"
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
 
-repositories {
-    mavenCentral()
+
+allOpen{
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.MappedSuperclass")
+    annotation("javax.persistence.Embeddable")
 }
 
 sonarqube {
     properties {
-        property ("sonar.projectKey", "depromeet_Whatnow-Api")
-        property ("sonar.organization", "depromeet-1")
+        property ("sonar.projectKey", "wifi6-api")
+        property ("sonar.organization", "wifi6-1")
         property ("sonar.host.url", "https://sonarcloud.io")
         property ("sonar.sources", "src")
         property ("sonar.language", "Kotlin")
@@ -38,31 +36,45 @@ sonarqube {
 }
 
 
+allprojects {
+    group = "com.jnu"
+    version = "0.0.1-SNAPSHOT"
 
-dependencies {
-    // feign
-    api ("io.github.openfeign:feign-httpclient:12.1")
-    api ("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4")
-    implementation("com.influxdb:influxdb-client-kotlin:6.10.0")
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+    }
 
-    // batch
-    implementation("org.springframework.boot:spring-boot-starter-batch")
-    testImplementation("org.springframework.batch:spring-batch-test")
-    implementation("org.springframework.boot:spring-boot-starter-quartz")
+    repositories {
+        mavenCentral()
+    }
+    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+    apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
 
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-web-services")
+    dependencies {
+        // feign
+        api ("io.github.openfeign:feign-httpclient:12.2")
+        api ("org.springframework.cloud:spring-cloud-starter-openfeign:4.0.1")
+        implementation("com.influxdb:influxdb-client-kotlin:6.10.0")
 
-//    implementation("org.springframework.boot:spring-boot-starter-webflux")
-//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+        // batch
+        implementation("org.springframework.boot:spring-boot-starter-batch:3.0.6")
+        testImplementation("org.springframework.batch:spring-batch-test")
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("io.projectreactor:reactor-test")
+        implementation("org.springframework.boot:spring-boot-starter-quartz")
+
+        implementation("org.springframework.boot:spring-boot-starter-web")
+        implementation("org.springframework.boot:spring-boot-starter-web-services")
+
+        //    implementation("org.springframework.boot:spring-boot-starter-webflux")
+        //    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
+        testImplementation("io.projectreactor:reactor-test")
+    }
 }
-
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
 
     kotlin {
@@ -74,56 +86,61 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         // https://blog.leocat.kr/notes/2020/12/14/intellij-avoid-wildcard-imports-in-kotlin-with-intellij
     }
 }
+subprojects {
 
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
-    }
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-tasks.getByName<Jar>("jar") {
-    enabled = false
-}
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+    apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "jacoco" )
 
 
 
-tasks.test {
-    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
-}
-
-tasks.jacocoTestReport {
-    dependsOn(tasks.test) // tests are required to run before generating the report
-    reports {
-        html.required.set(true) // html 설정
-        csv.required.set(true) // csv 설정
-        xml.required.set(true)
-        xml.outputLocation.set(File("${buildDir}/reports/jacoco.xml"))
+    tasks.getByName<Jar>("jar") {
+        enabled = false
     }
 
-    classDirectories.setFrom(
-        files(classDirectories.files.map {
-            fileTree(it) { // jacoco file 테스트 커버리지 측정안할 목록
-                exclude("**/*Application*",
-                    "**/*Config*",
-                    "**/*Dto*",
-                    "**/*Request*",
-                    "**/*Response*",
-                    "**/*Interceptor*",
-                    "**/*Exception*" ,
-                    "**/Q*") // Query Dsl 용이긴하나 Q로 시작하는 다른 클래스를 뺄 위험이 있음.
-            }
-        })
-    )
-}
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs += "-Xjsr305=strict"
+            jvmTarget = "17"
+        }
+    }
 
-sonarqube {
-    properties {
-        property ("sonar.java.binaries", "${buildDir}/classes")
-        property ("sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco.xml")
+    tasks.test {
+        finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+    }
+
+    tasks.jacocoTestReport {
+        dependsOn(tasks.test) // tests are required to run before generating the report
+        reports {
+            html.required.set(true) // html 설정
+            csv.required.set(true) // csv 설정
+            xml.required.set(true)
+            xml.outputLocation.set(File("${buildDir}/reports/jacoco.xml"))
+        }
+
+
+        classDirectories.setFrom(
+            files(classDirectories.files.map {
+                fileTree(it) { // jacoco file 테스트 커버리지 측정안할 목록
+                    exclude("**/*Application*",
+                        "**/*Config*",
+                        "**/*Dto*",
+                        "**/*Request*",
+                        "**/*Response*",
+                        "**/*Interceptor*",
+                        "**/*Exception*" ,
+                        "**/Q*") // Query Dsl 용이긴하나 Q로 시작하는 다른 클래스를 뺄 위험이 있음.
+                }
+            })
+        )
+    }
+
+    sonarqube {
+        properties {
+            property("sonar.java.binaries", "${buildDir}/classes")
+            property("sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco.xml")
+        }
     }
 }
