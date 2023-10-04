@@ -11,15 +11,7 @@ plugins {
     id("org.sonarqube") version "3.5.0.2730" // 소나 클라우드
     id("jacoco")
 }
-
-
-
-
-allOpen{
-    annotation("javax.persistence.Entity")
-    annotation("javax.persistence.MappedSuperclass")
-    annotation("javax.persistence.Embeddable")
-}
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 sonarqube {
     properties {
@@ -35,32 +27,55 @@ sonarqube {
     }
 }
 
+/*
+allOpen{
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.MappedSuperclass")
+    annotation("javax.persistence.Embeddable")
+}*/
 
 allprojects {
     group = "com.jnu"
     version = "0.0.1-SNAPSHOT"
 
-    java {
-        sourceCompatibility = JavaVersion.VERSION_17
-    }
-
     repositories {
         mavenCentral()
     }
+
+    apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+    apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "jacoco" )
     apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "11"
+        }
+    }
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 
     dependencies {
         // feign
         api ("io.github.openfeign:feign-httpclient:12.2")
-        api ("org.springframework.cloud:spring-cloud-starter-openfeign:4.0.1")
-        implementation("com.influxdb:influxdb-client-kotlin:6.10.0")
+        api ("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4")
+        //influx
+//        implementation("com.fasterxml.jackson.core:jackson-databind:2.10.2")
 
+        implementation("com.influxdb:influxdb-client-kotlin:6.6.0")
+
+        api("com.mysql:mysql-connector-j")
+
+        implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.5.8")
         // batch
-        implementation("org.springframework.boot:spring-boot-starter-batch:3.0.6")
+        implementation("org.springframework.boot:spring-boot-starter-batch")
         testImplementation("org.springframework.batch:spring-batch-test")
-
         implementation("org.springframework.boot:spring-boot-starter-quartz")
+        implementation("io.github.microutils:kotlin-logging:2.0.11")
 
         implementation("org.springframework.boot:spring-boot-starter-web")
         implementation("org.springframework.boot:spring-boot-starter-web-services")
@@ -74,28 +89,6 @@ allprojects {
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("io.projectreactor:reactor-test")
     }
-}
-configure<com.diffplug.gradle.spotless.SpotlessExtension> {
-
-    kotlin {
-        // version, setUseExperimental, userData and editorConfigOverride are all optional
-        target ("**/*.kt")
-        ktlint("0.48.0")
-        // kt lint 설정중에
-        // no wild card import 의경우를 그대로 따라갑니다. 대신 ide 에서 설정을 해주셔야합니다.
-        // https://blog.leocat.kr/notes/2020/12/14/intellij-avoid-wildcard-imports-in-kotlin-with-intellij
-    }
-}
-subprojects {
-
-    apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
-    apply(plugin = "org.springframework.boot")
-    apply(plugin = "io.spring.dependency-management")
-    apply(plugin = "jacoco" )
-
-
-
     tasks.getByName<Jar>("jar") {
         enabled = false
     }
@@ -142,5 +135,16 @@ subprojects {
             property("sonar.java.binaries", "${buildDir}/classes")
             property("sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco.xml")
         }
+    }
+}
+configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+
+    kotlin {
+        // version, setUseExperimental, userData and editorConfigOverride are all optional
+        target ("**/*.kt")
+        ktlint("0.48.0")
+        // kt lint 설정중에
+        // no wild card import 의경우를 그대로 따라갑니다. 대신 ide 에서 설정을 해주셔야합니다.
+        // https://blog.leocat.kr/notes/2020/12/14/intellij-avoid-wildcard-imports-in-kotlin-with-intellij
     }
 }

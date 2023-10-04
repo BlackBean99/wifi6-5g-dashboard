@@ -1,25 +1,31 @@
+properties:
+  meraki:
+    secret: ${MERAKI_SECRET:asd}
+    networks: ${MERAKI_NETWORK_ID:localhost}
 spring:
-  batch:
-    initialize-schema: never   # 1
   application:
     name: BATCH
-#  datasource:
-#    url: jdbc:mariadb://localhost:3306
-#    driver-class-name: org.mysql.jdbc.Driver
+  datasource:
+    url: jdbc:mysql://localhost:3306/wifi6?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: root
+    password: dltjgus119@@
     hikari:
       connection-timeout: 5000
       maximum-pool-size: 10
-  influx:
-    url: http://localhost:8086
-    org: my-org
-    bucket: my-bucket
-    token: my-token
-    logLevel: BODY
-    readTimeout: 5s
-    writeTimeout: 10s
-    connectTimeout: 5s
-meraki:
-  secret: ${MERAKI_SECRET}
-  network_id: ${MERAKI_NETWORK_ID:localhost}
+  influxdb:
+    url: aimon.jnu.ac.kr:8086
+    username: root
+    password: dltjgus119@@
+    database: test
+    retention-policy: autogen
+    connect-timeout: 5s
+    read-timeout: 5s
+    write-timeout: 10s
+    gzip: true
+#  influxdb:
+
+
+  batch:
+    jdbc:
+      initialize-schema: always

@@ -1,6 +1,6 @@
 package com.depromeet.whatnow.annotation
 
-import com.depromeet.whatnow.exception.BaseErrorCode
+import com.jnu.wifi6.common.BaseErrorCode
 import kotlin.reflect.KClass
 
 @Target(

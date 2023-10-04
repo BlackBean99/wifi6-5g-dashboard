@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component
 @Retention(AnnotationRetention.RUNTIME)
 @MustBeDocumented
 @Component
-annotation class Adapter(
+annotation class Adaptor(
     @get:AliasFor(annotation = Component::class) val value: String = "",
 )

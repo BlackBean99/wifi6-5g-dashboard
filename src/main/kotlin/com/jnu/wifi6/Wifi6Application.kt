@@ -7,7 +7,11 @@ import org.springframework.scheduling.annotation.EnableScheduling
 @SpringBootApplication
 @EnableBatchProcessing
 @EnableScheduling
-class Wifi6Application
-fun main(args: Array<String>) {
-    runApplication<Wifi6Application>(*args)
+class Wifi6Application{
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            runApplication<Wifi6Application>(*args)
+        }
+    }
 }
