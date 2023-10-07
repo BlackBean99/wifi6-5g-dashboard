@@ -21,8 +21,8 @@ class SingleStepJobConfig(
     fun multipleStepJob(): Job {
         return jobBuilderFactory["multipleStepJob"]
             .start(startStep())
-            .next(nextStep())
-            .next(lastStep())
+//            .next(nextStep())
+//            .next(lastStep())
             .build()
     }
     @Bean
@@ -34,7 +34,7 @@ class SingleStepJobConfig(
             }
             .build()
     }
-    @Bean
+/*    @Bean
     fun nextStep(): Step {
         return stepBuilderFactory["nextStep"]
             .tasklet { _: StepContribution, _: ChunkContext ->
@@ -51,5 +51,5 @@ class SingleStepJobConfig(
                 RepeatStatus.FINISHED
             }
             .build()
-    }
+    }*/
 }
