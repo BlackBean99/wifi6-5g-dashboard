@@ -2,6 +2,10 @@ package com.jnu.wifi6.batch
 
 import org.quartz.JobDetail
 import org.quartz.SimpleTrigger
+import org.springframework.batch.core.Job
+import org.springframework.batch.core.Step
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.quartz.JobDetailFactoryBean
@@ -9,7 +13,29 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean
 import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean
 
 @Configuration
-class QuartzSchedulerConfig() {
+class QuartzSchedulerConfig(
+    val apiItemReader: ApiItemReader,
+    val yourDataItemWriter: ApiItemWriter,
+    val jobBuilderFactory: JobBuilderFactory,
+    val stepBuilderFactory: StepBuilderFactory,
+) {
+
+    @Bean
+    fun yourBatchJob(): Job {
+        return jobBuilderFactory["yourBatchJob"]
+            .start(yourStep())
+            .build()
+    }
+
+    @Bean
+    fun yourStep(): Step {
+        return stepBuilderFactory["yourStep"]
+            .chunk<YourDataClass, YourDataClass>(1) // 처리할 데이터 사이즈
+            .reader(apiItemReader)
+            .writer(yourDataItemWriter)
+            .build()
+    }
+
     @Bean
     fun jobDetail(): JobDetailFactoryBean {
         val factoryBean = JobDetailFactoryBean()
