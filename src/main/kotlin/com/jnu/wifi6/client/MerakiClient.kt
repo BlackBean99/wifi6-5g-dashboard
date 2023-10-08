@@ -4,10 +4,12 @@ import com.jnu.wifi6.config.meraki.MerakiConfig
 import com.jnu.wifi6.domain.dto.ClientData
 import com.jnu.wifi6.domain.dto.NetworkInfo
 import org.springframework.cloud.openfeign.FeignClient
+import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestHeader
 
+@Component
 @FeignClient(name = "MerakiClient", url = "\${meraki.url}", configuration = [MerakiConfig::class])
 interface MerakiClient {
     @GetMapping("/networks/{network_id}/clients")

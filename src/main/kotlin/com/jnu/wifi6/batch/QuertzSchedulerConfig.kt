@@ -1,5 +1,7 @@
 package com.jnu.wifi6.batch
 
+import com.jnu.wifi6.domain.Clients
+import mu.KotlinLogging.logger
 import org.quartz.JobDetail
 import org.quartz.SimpleTrigger
 import org.springframework.batch.core.Job
@@ -11,6 +13,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.quartz.JobDetailFactoryBean
 import org.springframework.scheduling.quartz.SchedulerFactoryBean
 import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean
+import kotlin.math.log
 
 @Configuration
 class QuartzSchedulerConfig(
@@ -20,6 +23,8 @@ class QuartzSchedulerConfig(
     val stepBuilderFactory: StepBuilderFactory,
 ) {
 
+    // log
+    private val log = logger {}
     @Bean
     fun yourBatchJob(): Job {
         return jobBuilderFactory["yourBatchJob"]
@@ -29,8 +34,9 @@ class QuartzSchedulerConfig(
 
     @Bean
     fun yourStep(): Step {
+        log.info("서현!")
         return stepBuilderFactory["yourStep"]
-            .chunk<YourDataClass, YourDataClass>(1) // 처리할 데이터 사이즈
+            .chunk<Clients, Clients>(1) // 처리할 데이터 사이즈
             .reader(apiItemReader)
             .writer(yourDataItemWriter)
             .build()
