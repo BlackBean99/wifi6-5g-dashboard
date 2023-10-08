@@ -86,18 +86,13 @@ class ApiItemWriter(
                             .addTag("usageRecv", clientData.usageRecv.toString())
                             .addTag("usageTotal", clientData.usageTotal.toString())
                             .time(Instant.parse(lastSeenTime), WritePrecision.NS)
-                            .build()
-
                         // 데이터를 비동기적으로 InfluxDB에 쓰기
                         writeApi.writePoint(point)
                     }
                 }
             }
-
             // 모든 비동기 작업이 완료될 때까지 대기
-            writeApi.flush()
         }
-
         // 클라이언트를 닫습니다.
         client.close()
     }
