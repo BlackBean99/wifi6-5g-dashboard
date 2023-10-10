@@ -1,6 +1,6 @@
 package com.jnu.wifi6.batch
 
-import com.jnu.wifi6.domain.Clients
+import com.jnu.wifi6.domain.dto.ClientData
 import mu.KotlinLogging.logger
 import org.quartz.JobDetail
 import org.quartz.SimpleTrigger
@@ -13,12 +13,11 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.quartz.JobDetailFactoryBean
 import org.springframework.scheduling.quartz.SchedulerFactoryBean
 import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean
-import kotlin.math.log
 
 @Configuration
 class QuartzSchedulerConfig(
-    val apiItemReader: ApiItemReader,
-    val yourDataItemWriter: ApiItemWriter,
+    val itermReader: ApiItemReader,
+    val itemWriter: ApiItemWriter,
     val jobBuilderFactory: JobBuilderFactory,
     val stepBuilderFactory: StepBuilderFactory,
 ) {
@@ -32,20 +31,13 @@ class QuartzSchedulerConfig(
             .build()
     }
 
-    @Bean
-    fun yourStep(): Step {
-        log.info("서현!")
-        return stepBuilderFactory["yourStep"]
-            .chunk<Clients, Clients>(1) // 처리할 데이터 사이즈
-            .reader(apiItemReader)
-            .writer(yourDataItemWriter)
-            .build()
-    }
+
 
     @Bean
     fun jobDetail(): JobDetailFactoryBean {
         val factoryBean = JobDetailFactoryBean()
         factoryBean.setJobClass(ApiCallJob::class.java) // Job 클래스를 만들어야 함
+        //yourBatchJob 실행
         factoryBean.setDurability(true)
         return factoryBean
     }

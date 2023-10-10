@@ -2,6 +2,7 @@ properties:
   meraki:
     secret: ${MERAKI_SECRET:asd}
     networks: ${MERAKI_NETWORK_ID:localhost}
+    url: ${MERAKI_URL:https://api.meraki.com/api/v1}
 spring:
   application:
     name: BATCH

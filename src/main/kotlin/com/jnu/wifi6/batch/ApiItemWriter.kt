@@ -35,25 +35,6 @@ class ApiItemWriter(
                     clientDataList.forEach { clientData ->
                         val lastSeenTime = clientData.lastSeen// lastSeen 속성을 InfluxDB의 시간 형식으로 변환
                         val point = Point.measurement("measurementName")
-                            /*
-                                val id: String,
-                                val mac: String,
-                                val description: String?,
-                                val ip: String,
-                                val user: String?,
-                                val firstSeen: String,
-                                val lastSeen: String,
-                                val deviceTypePrediction: String?,
-                                val recentDeviceSerial: String,
-                                val recentDeviceName: String,
-                                val recentDeviceMac: String,
-                                val recentDeviceConnection: String,
-                                val ssid: String,
-                                val status: String,
-                                val usageSent: Long,
-                                val usageRecv: Long,
-                                val usageTotal: Long,
-                             */
                             .addTag("id", clientData.id)
                             .addTag("mac", clientData.mac)
                             .addTag("description", clientData.description)

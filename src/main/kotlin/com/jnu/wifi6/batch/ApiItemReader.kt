@@ -2,7 +2,6 @@ package com.jnu.wifi6.batch
 
 import com.jnu.wifi6.client.MerakiClient
 import com.jnu.wifi6.config.MerakiProperties
-import com.jnu.wifi6.domain.Clients
 import com.jnu.wifi6.domain.dto.ClientData
 import org.springframework.batch.item.ItemReader
 import org.springframework.stereotype.Component
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Component
 @Component
 class ApiItemReader(
     val merakiProperties: MerakiProperties,
-    val merakiClient: MerakiClient
+    val merakiClient: MerakiClient,
 ) : ItemReader<List<ClientData>> {
 
     // API 요청 및 데이터 읽기 로직을 여기에 구현

@@ -1,5 +1,9 @@
 package com.jnu.wifi6.domain.dto
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy
+import com.fasterxml.jackson.databind.annotation.JsonNaming
+
+@JsonNaming(SnakeCaseStrategy::class)
 data class ClientData(
     val id: String,
     val mac: String,
