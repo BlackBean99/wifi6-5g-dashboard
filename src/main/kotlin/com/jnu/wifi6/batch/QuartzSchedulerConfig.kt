@@ -2,11 +2,7 @@ package com.jnu.wifi6.batch
 
 import com.jnu.wifi6.domain.dto.ClientData
 import mu.KotlinLogging.logger
-import org.quartz.JobDetail
-import org.quartz.SimpleTrigger
 import org.springframework.batch.core.Job
-import org.springframework.batch.core.JobParameter
-import org.springframework.batch.core.JobParameters
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory
@@ -14,10 +10,6 @@ import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.item.ItemWriter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.scheduling.quartz.JobDetailFactoryBean
-import org.springframework.scheduling.quartz.SchedulerFactoryBean
-import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean
 
 @Configuration
 class QuartzSchedulerConfig(
@@ -28,7 +20,7 @@ class QuartzSchedulerConfig(
 ) {
 
     private final val CUSTOM_READER_JOB = "CUSTOM_READER_JOB"
-    private final val CUSTOM_READER_JOB_STEP = CUSTOM_READER_JOB +"_STEP"
+    private final val CUSTOM_READER_JOB_STEP = CUSTOM_READER_JOB + "_STEP"
     private final val CHUNK_SIZE = 10
 
     // log
@@ -69,12 +61,11 @@ class QuartzSchedulerConfig(
 //    }
 
     @Bean
-    fun customReaderJob(): Job{
+    fun customReaderJob(): Job {
         return jobBuilderFactory.get(CUSTOM_READER_JOB)
             .start(customReaderStep())
             .build()
     }
-
 
 //    @Bean
 //    fun scheduler(jobDetail: JobDetail, simpleTrigger: SimpleTrigger): SchedulerFactoryBean {
@@ -85,9 +76,10 @@ class QuartzSchedulerConfig(
 //    }
     @Bean
     @StepScope
-    fun reader(): ApiItemReader{
+    fun reader(): ApiItemReader {
         return ApiItemReader()
     }
+
     /*@Bean
     fun processor(): ItemProcessor<List<ClientData>, Book>{
         return ItemProcessor {
@@ -98,10 +90,5 @@ class QuartzSchedulerConfig(
     @Bean
     fun writer(): ItemWriter<List<ClientData>> {
         return ApiItemWriter()
-        }
     }
-
-
-
-
-
+}

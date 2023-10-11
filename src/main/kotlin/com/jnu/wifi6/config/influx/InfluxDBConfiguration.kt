@@ -1,15 +1,15 @@
-//package com.jnu.wifi6.config.influx
+// package com.jnu.wifi6.config.influx
 //
-//import com.influxdb.client.write.Point
-//import org.springframework.beans.factory.annotation.Qualifier
-//import org.springframework.boot.context.properties.EnableConfigurationProperties
-//import org.springframework.context.annotation.Bean
-//import org.springframework.context.annotation.Configuration
-//import org.springframework.data.influxdb.InfluxDBConnectionFactory
+// import com.influxdb.client.write.Point
+// import org.springframework.beans.factory.annotation.Qualifier
+// import org.springframework.boot.context.properties.EnableConfigurationProperties
+// import org.springframework.context.annotation.Bean
+// import org.springframework.context.annotation.Configuration
+// import org.springframework.data.influxdb.InfluxDBConnectionFactory
 //
-///*
-//@Import(InfluxDBErrorDecoder::class)
-//class InfluxDBConfig() {
+// /*
+// @Import(InfluxDBErrorDecoder::class)
+// class InfluxDBConfig() {
 //
 //    @Bean
 //    fun encoder(converters: ObjectFactory<HttpMessageConverters>): Encoder {
@@ -17,12 +17,12 @@
 //    }
 //    val influxDBClient = InfluxDBClientKotlinFactory
 //        .create("http://localhost:8086", "my-token".toCharArray(), "my-org")
-//}
-//*/
+// }
+// */
 //
-//@Configuration
-//@EnableConfigurationProperties(InfluxDBProperties::class)
-//class InfluxDBConfiguration {
+// @Configuration
+// @EnableConfigurationProperties(InfluxDBProperties::class)
+// class InfluxDBConfiguration {
 //    @Bean
 //    fun connectionFactory(@Qualifier("spring.influxdb-org.springframework.data.influxdb.InfluxDBProperties") properties: InfluxDBProperties?): InfluxDBConnectionFactory {
 //        return InfluxDBConnectionFactory(properties)
@@ -45,4 +45,4 @@
 //         */
 //        return DefaultInfluxDBTemplate(connectionFactory)
 //    }
-//}
+// }

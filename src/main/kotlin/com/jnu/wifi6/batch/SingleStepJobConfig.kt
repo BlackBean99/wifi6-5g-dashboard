@@ -12,10 +12,11 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 private val log = KotlinLogging.logger {}
+
 @Configuration
 class SingleStepJobConfig(
     private val jobBuilderFactory: JobBuilderFactory,
-    private val stepBuilderFactory: StepBuilderFactory
+    private val stepBuilderFactory: StepBuilderFactory,
 ) {
     @Bean
     fun multipleStepJob(): Job {
@@ -25,6 +26,7 @@ class SingleStepJobConfig(
 //            .next(lastStep())
             .build()
     }
+
     @Bean
     fun startStep(): Step {
         return stepBuilderFactory["startStep"]

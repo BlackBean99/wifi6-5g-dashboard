@@ -12,28 +12,27 @@ import org.springframework.stereotype.Component
 import java.text.SimpleDateFormat
 import javax.batch.operations.JobExecutionAlreadyCompleteException
 
-
 @Component
 class SimpleJobScheduler(
     val jobLauncher: JobLauncher,
-    val customReaderJobConfig: QuartzSchedulerConfig
+    val customReaderJobConfig: QuartzSchedulerConfig,
 ) {
     private val logger: Log = LogFactory.getLog(QuartzSchedulerConfig::class.java)
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-    @Scheduled(initialDelay = 10000, fixedDelay = 10000)
-    fun runJob(){
+    @Scheduled(initialDelay = 10000, fixedDelay = 50000)
+    fun runJob() {
         val jobConf = hashMapOf<String, JobParameter>()
         jobConf["time"] = JobParameter(dateFormat.format(System.currentTimeMillis()))
         val jobParameters = JobParameters(jobConf)
 
-        try{
+        try {
             jobLauncher.run(customReaderJobConfig.customReaderJob(), jobParameters)
-        } catch(e: JobExecutionAlreadyCompleteException){
+        } catch (e: JobExecutionAlreadyCompleteException) {
             logger.error(e.localizedMessage)
-        } catch(e: JobExecutionAlreadyRunningException){
+        } catch (e: JobExecutionAlreadyRunningException) {
             logger.error(e.localizedMessage)
-        } catch(e: JobParametersInvalidException){
+        } catch (e: JobParametersInvalidException) {
             logger.error(e.localizedMessage)
         }
     }

@@ -8,5 +8,5 @@ import java.time.Instant
 data class Mem(
     @Column(tag = true) val host: String,
     @Column val used_percent: Double,
-    @Column(timestamp = true) val time: Instant
+    @Column(timestamp = true) val time: Instant,
 )

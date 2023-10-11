@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling
 @EnableFeignClients
 @EnableBatchProcessing
 @EnableScheduling
-class Wifi6Application{
+class Wifi6Application {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {

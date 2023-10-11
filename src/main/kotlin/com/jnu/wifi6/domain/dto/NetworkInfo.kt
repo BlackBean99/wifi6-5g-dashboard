@@ -20,5 +20,4 @@ data class NetworkInfo(
     val configurationUpdatedAt: String? = null,
     val firmware: String? = null,
     val url: String? = null,
-) {
-}
+)

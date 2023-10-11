@@ -30,7 +30,7 @@ interface MerakiClient {
      * @param contentType : application/json
      * @suppress https://developer.cisco.com/meraki/api/get-organizations/
      * @throws 403 : API 토큰이 잘못되었을 경우
-    * */
+     * */
     @GetMapping("/networks/{network_id}")
     fun getNetworkIds(
         @PathVariable(name = "network_id") networkId: String,

@@ -15,7 +15,6 @@ class Clients(
     val id: Long? = 0,
 
     @Column(updatable = true)
-    val name:String
-){
-
+    val name: String,
+) {
 }

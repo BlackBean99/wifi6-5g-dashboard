@@ -7,14 +7,15 @@ import com.jnu.wifi6.domain.dto.ClientData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.springframework.stereotype.Component
 import org.springframework.batch.item.ItemWriter
+import org.springframework.stereotype.Component
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 @Component
-class ApiItemWriter(
-
-)  : ItemWriter<List<ClientData>> {
+class ApiItemWriter() : ItemWriter<List<ClientData>> {
     override fun write(items: MutableList<out List<ClientData>>) {
         // items에 읽어온 데이터가 들어있습니다.
 
@@ -28,12 +29,12 @@ class ApiItemWriter(
 
         runBlocking {
             val writeApi = client.getWriteKotlinApi()
+//            val dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SS'Z'")
 
             // 코루틴을 사용하여 비동기로 데이터 쓰기 작업을 수행
             items.forEach { clientDataList ->
                 launch(Dispatchers.IO) {
                     clientDataList.forEach { clientData ->
-                        val lastSeenTime = clientData.lastSeen// lastSeen 속성을 InfluxDB의 시간 형식으로 변환
                         val point = Point.measurement("measurementName")
                             .addTag("id", clientData.id)
                             .addTag("mac", clientData.mac)
@@ -61,12 +62,14 @@ class ApiItemWriter(
                              */
                             .addTag("ssid", clientData.ssid)
                             .addTag("status", clientData.status)
-                            .addTag("firstSeen", clientData.firstSeen)
-                            .addTag("lastSeen", clientData.lastSeen)
+                            .addTag("firstSeen", clientData.firstSeen.toString())
+                            .addTag("lastSeen", clientData.lastSeen.toString())
                             .addTag("usageSent", clientData.usageSent.toString())
                             .addTag("usageRecv", clientData.usageRecv.toString())
                             .addTag("usageTotal", clientData.usageTotal.toString())
-                            .time(Instant.parse(lastSeenTime), WritePrecision.NS)
+                        val lastSeenTimeString = DateTimeFormatter.ISO_INSTANT.format(
+                            (clientData.lastSeen ?: LocalDateTime.now()).atOffset(ZoneOffset.UTC))
+                        point.time(Instant.parse(lastSeenTimeString), WritePrecision.MS)
                         // 데이터를 비동기적으로 InfluxDB에 쓰기
                         writeApi.writePoint(point)
                     }
@@ -78,8 +81,3 @@ class ApiItemWriter(
         client.close()
     }
 }
-
-
-
-
-
