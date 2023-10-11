@@ -35,6 +35,6 @@ open class ApiItemReader(
 //        val networkIds = merakiClient.getNetworkIds()
         return merakiClient.getNetworkInfo(
             networkId = merakiProperties.meraki.networks,
-            token = merakiProperties.meraki.secret)
+            token = "Bearer " + merakiProperties.meraki.secret)
     }
 }
