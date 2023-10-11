@@ -1,9 +1,9 @@
 package com.jnu.wifi6.config.influx
 
-import com.depromeet.whatnow.exception.custom.OtherServerBadRequestException
-import com.depromeet.whatnow.exception.custom.OtherServerExpiredTokenException
-import com.depromeet.whatnow.exception.custom.OtherServerForbiddenException
-import com.depromeet.whatnow.exception.custom.OtherServerUnauthorizedException
+import com.jnu.wifi6.common.custom.OtherServerBadRequestException
+import com.jnu.wifi6.common.custom.OtherServerExpiredTokenException
+import com.jnu.wifi6.common.custom.OtherServerForbiddenException
+import com.jnu.wifi6.common.custom.OtherServerUnauthorizedException
 import feign.FeignException
 import feign.Response
 import feign.codec.ErrorDecoder

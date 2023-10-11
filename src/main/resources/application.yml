@@ -16,9 +16,9 @@ spring:
       maximum-pool-size: 10
   influxdb:
     url: aimon.jnu.ac.kr:8086
-    username: root
-    password: dltjgus119@@
-    database: test
+    username: ${INFLUX_USERNAME:root}
+    password: ${INFLUX_PASSWORD:dltjgus119@@}
+    database: ${INFLUX_DATABASE:wifi6}
     retention-policy: autogen
     connect-timeout: 5s
     read-timeout: 5s

@@ -1,4 +1,4 @@
-package com.depromeet.whatnow.exception.custom
+package com.jnu.wifi6.common.custom
 
 import com.jnu.wifi6.common.CommonCodeException
 import com.jnu.wifi6.common.GlobalErrorCode
