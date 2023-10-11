@@ -4,21 +4,23 @@ import com.jnu.wifi6.client.MerakiClient
 import com.jnu.wifi6.config.MerakiProperties
 import com.jnu.wifi6.domain.dto.ClientData
 import org.springframework.batch.item.ItemReader
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 
 @Component
-class ApiItemReader(
-    val merakiProperties: MerakiProperties,
-    val merakiClient: MerakiClient,
+open class ApiItemReader(
 ) : ItemReader<List<ClientData>> {
+    @Autowired
+    private lateinit var merakiProperties: MerakiProperties
 
+    @Autowired
+    private lateinit var merakiClient: MerakiClient
     // API 요청 및 데이터 읽기 로직을 여기에 구현
 
     override fun read(): List<ClientData> {
         // API를 호출하고 데이터를 읽어오는 로직
         val data = fetchDataFromApi()
-
         // 데이터를 더 이상 읽을 수 없을 때는 null 반환
         return data
     }
