@@ -18,14 +18,13 @@ class QuartzSchedulerConfig(
     val jobBuilderFactory: JobBuilderFactory,
     val stepBuilderFactory: StepBuilderFactory,
 ) {
-
     private final val CUSTOM_READER_JOB = "CUSTOM_READER_JOB"
     private final val CUSTOM_READER_JOB_STEP = CUSTOM_READER_JOB + "_STEP"
     private final val CHUNK_SIZE = 10
 
     // log
     private val log = logger {}
-/*    @Bean
+/*     @Bean
     fun yourBatchJob(): Job {
         return jobBuilderFactory["yourBatchJob"]
             .start(yourStep())
@@ -88,6 +87,7 @@ class QuartzSchedulerConfig(
         }
     }*/
     @Bean
+    @StepScope
     fun writer(): ItemWriter<List<ClientData>> {
         return ApiItemWriter()
     }

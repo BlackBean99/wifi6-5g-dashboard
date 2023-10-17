@@ -21,8 +21,7 @@ class WifiSyncController(
 //        clientService.getUserInformation(networkId)
     }
 
-    @GetMapping("")
-    suspend fun testClient() {
+    @GetMapping("") suspend fun testClient() {
         // You can generate an API token from the "API Tokens Tab" in the UI
         val token = "a6e20dcb16b7d374169f1c8fdb53fc2375df6d94"
         val org = "JNU"

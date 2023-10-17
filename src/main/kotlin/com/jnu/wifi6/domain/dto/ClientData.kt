@@ -5,17 +5,15 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 import java.time.LocalDateTime
 
-@JsonNaming(SnakeCaseStrategy::class)
+//@JsonNaming(SnakeCaseStrategy::class)
 data class ClientData(
     val id: String?,
     val mac: String?,
     val description: String?,
     val ip: String?,
     val user: String?,
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    val firstSeen: LocalDateTime?,
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    val lastSeen: LocalDateTime?,
+    val firstSeen: String?,
+    val lastSeen: String?,
     val deviceTypePrediction: String?,
     val recentDeviceSerial: String?,
     val recentDeviceName: String?,
@@ -23,10 +21,7 @@ data class ClientData(
     val recentDeviceConnection: String?,
     val ssid: String?,
     val status: String?,
-    val usageSent: Long,
-    val usageRecv: Long,
-    val usageTotal: Long,
-
+    val usage: UsageVo?,
     /**
      eduroam 접속자
      @sample
