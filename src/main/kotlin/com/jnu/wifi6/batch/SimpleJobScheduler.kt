@@ -24,7 +24,6 @@ class SimpleJobScheduler(
 
 //     매 15초마다 실행
     @Scheduled(initialDelay = 500000, fixedDelay = 500000)
-//    @Scheduled(fixedDelay = 100000)
     fun runJob() {
         val jobConf = hashMapOf<String, JobParameter>()
         logger.info("Job Started at :" + DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.now()))

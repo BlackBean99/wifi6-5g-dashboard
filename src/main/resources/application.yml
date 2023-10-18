@@ -3,31 +3,38 @@ properties:
     secret: ${MERAKI_SECRET:asd}
     networks: ${MERAKI_NETWORK_ID:localhost}
     url: ${MERAKI_URL:https://api.meraki.com/api/v1}
-
+influx:
+  properties:
+    url: ${INFLUX_URL:aimon.jnu.ac.kr:8086}
+    token: ${INFLUX_TOKEN:asd}
+    username: ${INFLUX_USERNAME:admin}
+    password: ${INFLUX_PASSWORD:wjsskaeo1!}
+    org: ${INFLUX_ORG:JNU}
+    bucket: ${INFLUX_BUCKET:JNU}
 spring:
   application:
     name: BATCH
   datasource:
-    url: jdbc:mysql://localhost:3306/wifi6?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/wifi6?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: dltjgus119@@
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:Dltjgus119@@}
     hikari:
       connection-timeout: 5000
       maximum-pool-size: 10
-  influxdb:
-    url: aimon.jnu.ac.kr:8086
-    username: ${INFLUX_USERNAME:admin}
-    password: ${INFLUX_PASSWORD:wjsskaeo1!}
-    bucket: ${INFLUX_BUCKET:JNU}
-    retention-policy: autogen
-    connect-timeout: 5s
-    read-timeout: 5s
-    write-timeout: 10s
-    gzip: true
+  influx:
+    influx:
+      url: ${INFLUX_URL:aimon.jnu.ac.kr:8086}
+      username: ${INFLUX_USERNAME:admin}
+      password: ${INFLUX_PASSWORD:wjsskaeo1!}
+      bucket: ${INFLUX_BUCKET:JNU}
+      org: ${INFLUX_ORG:JNU}
+      retention-policy: autogen
+      connect-timeout: 5s
+      read-timeout: 5s
+      write-timeout: 10s
+      gzip: true
 #  influxdb:
-
-
   batch:
     jdbc:
       initialize-schema: always

@@ -68,7 +68,7 @@ allprojects {
 
         implementation("com.influxdb:influxdb-client-kotlin:6.6.0")
 
-        api("com.mysql:mysql-connector-j")
+        api("com.mysql:mysql-connector-j:8.1.0")
 
         implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.5.8")
         // batch

@@ -3,6 +3,7 @@ package com.jnu.wifi6.batch
 import com.influxdb.client.domain.WritePrecision
 import com.influxdb.client.kotlin.InfluxDBClientKotlinFactory
 import com.influxdb.client.write.Point
+import com.jnu.wifi6.config.influx.InfluxProperties
 import com.jnu.wifi6.domain.dto.ClientData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,19 +15,20 @@ import java.time.LocalDateTime
 
 @Component
 class ApiItemWriter(
-
+    val influxProperties: InfluxProperties,
 )  : ItemWriter<List<ClientData>> {
     override fun write(items: MutableList<out List<ClientData>>) {
         val logger = mu.KotlinLogging.logger {}
         // items에 읽어온 데이터가 들어있습니다.
 
         // ClientData를 InfluxDB에 비동기적으로 쓰는 로직을 구현
-        val token = "F5_a5VCwGQwClcQigBrqd25fQ3b3i3xK_8k5J7Cjv4XKVVVxZ58BB2xQtb85wqoSa9Q0Cdzyqy5Co3TSARKbzQ=="
-        val org = "JNU"
-        val bucket = "JNU"
-
         // InfluxDB Kotlin 클라이언트를 생성
-        val client = InfluxDBClientKotlinFactory.create("http://aimon.jnu.ac.kr:8086", token!!.toCharArray(), org, bucket)
+        val client = InfluxDBClientKotlinFactory.create(
+            url = influxProperties.properties.url,
+            token = influxProperties.properties.token.toCharArray(),
+            org = influxProperties.properties.org,
+            bucket = influxProperties.properties.bucket
+        )
 
         val clientDataList = items.flatten().distinctBy { it.id }
         runBlocking {
