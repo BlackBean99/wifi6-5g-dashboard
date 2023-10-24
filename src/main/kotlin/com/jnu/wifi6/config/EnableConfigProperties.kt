@@ -8,3 +8,4 @@ import org.springframework.context.annotation.Configuration
 @EnableConfigurationProperties(InfluxProperties::class, MerakiProperties::class)
 @Configuration
 class EnableConfigProperties
+

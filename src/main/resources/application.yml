@@ -5,7 +5,7 @@ properties:
     url: ${MERAKI_URL:https://api.meraki.com/api/v1}
 influx:
   properties:
-    url: ${INFLUX_URL:aimon.jnu.ac.kr:8086}
+    url: ${INFLUX_URL:http://aimon.jnu.ac.kr:8086}
     token: ${INFLUX_TOKEN:asd}
     username: ${INFLUX_USERNAME:admin}
     password: ${INFLUX_PASSWORD:wjsskaeo1!}

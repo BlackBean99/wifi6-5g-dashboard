@@ -36,9 +36,7 @@ open class ApiItemReader() : ItemReader<List<ClientData>> {
                 networkId = merakiProperties.meraki.networks,
                 token = token,
             )
-
             // 로깅: API 요청 및 응답 정보를 로그에 기록
-            logger.info("API request successful: $token")
             return clientDataList
         } catch (e: Exception) {
             // 예외 처리: API 호출 중에 예외가 발생한 경우 로그에 기록하고 필요한 예외 처리 수행

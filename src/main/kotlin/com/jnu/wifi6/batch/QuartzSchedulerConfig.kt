@@ -14,33 +14,13 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class QuartzSchedulerConfig(
-//    val itermReader: ApiItemReader,
-//    val itemWriter: ApiItemWriter,
     val influxProperties: InfluxProperties,
     val jobBuilderFactory: JobBuilderFactory,
     val stepBuilderFactory: StepBuilderFactory,
 ) {
     private final val CUSTOM_READER_JOB = "CUSTOM_READER_JOB"
     private final val CUSTOM_READER_JOB_STEP = CUSTOM_READER_JOB + "_STEP"
-    private final val CHUNK_SIZE = 10
-
-    // log
-    private val log = logger {}
-/*     @Bean
-    fun yourBatchJob(): Job {
-        return jobBuilderFactory["yourBatchJob"]
-            .start(yourStep())
-            .build()
-    }*/
-
-//    @Bean
-//    fun jobDetail(): JobDetailFactoryBean {
-//        val factoryBean = JobDetailFactoryBean()
-//        factoryBean.setJobClass(ApiCallJob::class.java) // Job 클래스를 만들어야 함
-//        //yourBatchJob 실행
-//        factoryBean.setDurability(true)
-//        return factoryBean
-//    }
+    private final val CHUNK_SIZE = 1
 
     @Bean
     fun customReaderStep(): Step {
@@ -48,18 +28,9 @@ class QuartzSchedulerConfig(
             .chunk<List<ClientData>, List<ClientData>>(CHUNK_SIZE)
             .reader(reader())
             .writer(writer())
+            .writer(countWriter())
             .build()
     }
-
-//    @Bean
-//    fun simpleTrigger(jobDetail: JobDetail): SimpleTriggerFactoryBean {
-//        val factoryBean = SimpleTriggerFactoryBean()
-//        factoryBean.setJobDetail(jobDetail) // JobDetail을 주입해야 함
-//        factoryBean.setStartDelay(3000L) // 3초 후에 실행
-//        factoryBean.setRepeatInterval(3000L) // 3초마다 한 번씩 실행
-//        factoryBean.setRepeatCount(SimpleTrigger.REPEAT_INDEFINITELY) // 무한 반복
-//        return factoryBean
-//    }
 
     @Bean
     fun customReaderJob(): Job {
@@ -68,29 +39,20 @@ class QuartzSchedulerConfig(
             .build()
     }
 
-//    @Bean
-//    fun scheduler(jobDetail: JobDetail, simpleTrigger: SimpleTrigger): SchedulerFactoryBean {
-//        val factoryBean = SchedulerFactoryBean()
-//        factoryBean.setJobDetails(jobDetail)
-//        factoryBean.setTriggers(simpleTrigger)
-//        return factoryBean
-//    }
     @Bean
     @StepScope
     fun reader(): ApiItemReader {
         return ApiItemReader()
     }
 
-    /*@Bean
-    fun processor(): ItemProcessor<List<ClientData>, Book>{
-        return ItemProcessor {
-            it.author = "Author. " + it.author
-            it
-        }
-    }*/
     @Bean
     @StepScope
     fun writer(): ItemWriter<List<ClientData>> {
         return ApiItemWriter(influxProperties)
+    }
+    @Bean
+    @StepScope
+    fun countWriter(): ItemWriter<List<ClientData>> {
+        return CountItemWriter(influxProperties)
     }
 }

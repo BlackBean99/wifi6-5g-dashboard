@@ -23,11 +23,12 @@ class ApiItemWriter(
 
         // ClientData를 InfluxDB에 비동기적으로 쓰는 로직을 구현
         // InfluxDB Kotlin 클라이언트를 생성
+
         val client = InfluxDBClientKotlinFactory.create(
-            url = influxProperties.properties.url,
-            token = influxProperties.properties.token.toCharArray(),
-            org = influxProperties.properties.org,
-            bucket = influxProperties.properties.bucket
+            "http://" + influxProperties.properties.url,
+            influxProperties.properties.token.toCharArray(),
+            influxProperties.properties.org,
+            influxProperties.properties.bucket
         )
 
         val clientDataList = items.flatten().distinctBy { it.id }
