@@ -59,11 +59,11 @@ allprojects {
         useJUnitPlatform()
     }
 
-    tasks.withType<JavaExec> {
-        doLast {
-            commandLine("bash", "load_env.sh")
-        }
-    }
+//    tasks.withType<JavaExec> {
+//        doLast {
+//            commandLine("bash", "load_env.sh")
+//        }
+//    }
 
     dependencies {
         // feign

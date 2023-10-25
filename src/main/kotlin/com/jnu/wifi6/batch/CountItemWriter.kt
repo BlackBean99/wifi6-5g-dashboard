@@ -36,13 +36,14 @@ class CountItemWriter(
             val totalCount = clientDataList.size
             val authenticationCount = clientDataList.filter { it.user != null }.size
             val nonAuthenticationCount = clientDataList.filter { it.user == null }.size
-
+            val usage = clientDataList.map { it.usage?.total ?: 0 }.sum()
             val point = Point
                 .measurement("connection_count")
                 .addTag("id", clientDataList.first().id)
-                .addField("totlaCount", authenticationCount)
+                .addField("totalCount", authenticationCount)
                 .addField("authenticationCount", authenticationCount)
                 .addField("nonAuthenticationCount", nonAuthenticationCount)
+                .addField("usage", usage)
                 .addField("total", totalCount)
                 .time(Instant.parse(clientDataList.first().lastSeen ?: LocalDateTime.now().toString()), WritePrecision.MS)
             writeApi.writePoint(point)
