@@ -59,6 +59,12 @@ allprojects {
         useJUnitPlatform()
     }
 
+    tasks.withType<JavaExec> {
+        doLast {
+            commandLine("bash", "load_env.sh")
+        }
+    }
+
     dependencies {
         // feign
         api ("io.github.openfeign:feign-httpclient:12.2")
