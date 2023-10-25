@@ -7,7 +7,6 @@ import org.springframework.batch.core.JobParameters
 import org.springframework.batch.core.JobParametersInvalidException
 import org.springframework.batch.core.launch.JobLauncher
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.text.SimpleDateFormat

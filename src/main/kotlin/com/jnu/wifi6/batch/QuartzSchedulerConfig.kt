@@ -2,7 +2,6 @@ package com.jnu.wifi6.batch
 
 import com.jnu.wifi6.config.influx.InfluxProperties
 import com.jnu.wifi6.domain.dto.ClientData
-import mu.KotlinLogging.logger
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
@@ -50,6 +49,7 @@ class QuartzSchedulerConfig(
     fun writer(): ItemWriter<List<ClientData>> {
         return ApiItemWriter(influxProperties)
     }
+
     @Bean
     @StepScope
     fun countWriter(): ItemWriter<List<ClientData>> {

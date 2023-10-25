@@ -1,11 +1,6 @@
 package com.jnu.wifi6.domain.dto
 
-import com.fasterxml.jackson.annotation.JsonFormat
-import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy
-import com.fasterxml.jackson.databind.annotation.JsonNaming
-import java.time.LocalDateTime
-
-//@JsonNaming(SnakeCaseStrategy::class)
+// @JsonNaming(SnakeCaseStrategy::class)
 data class ClientData(
     val id: String?,
     val mac: String?,
@@ -21,7 +16,7 @@ data class ClientData(
     val recentDeviceConnection: String?,
     val ssid: String?,
     val status: String?,
-    val usage: UsageVo?,
+    val usage: Usage?,
     /**
      eduroam 접속자
      @sample
