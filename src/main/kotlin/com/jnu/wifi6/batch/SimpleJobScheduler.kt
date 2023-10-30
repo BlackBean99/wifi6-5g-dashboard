@@ -21,8 +21,8 @@ class SimpleJobScheduler(
     private val logger: Log = LogFactory.getLog(QuartzSchedulerConfig::class.java)
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'")
 
-//    @Scheduled(initialDelay = 300000, fixedDelay = 300000)
-    @Scheduled(cron = "0 * * * * ?")
+    // 5분 간격으로 실행
+    @Scheduled(cron = "0 0/5 * * * *")
     fun runJob() {
         val jobConf = hashMapOf<String, JobParameter>()
         logger.info("Job Started at :" + DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.now()))
@@ -38,4 +38,5 @@ class SimpleJobScheduler(
             logger.error(e.localizedMessage)
         }
     }
+
 }
