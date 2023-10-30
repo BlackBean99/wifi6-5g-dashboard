@@ -14,6 +14,7 @@ import java.time.LocalDateTime
 @Component
 class CountItemWriter(
     val influxProperties: InfluxProperties,
+    val influxReader: InfluxReader,
 ) : ItemWriter<List<ClientData>> {
     override fun write(items: MutableList<out List<ClientData>>) {
         val logger = mu.KotlinLogging.logger {}
@@ -32,10 +33,10 @@ class CountItemWriter(
         val clientDataList = items.flatten().distinctBy { it.id }
         runBlocking {
             val writeApi = client.getWriteKotlinApi()
+
+            val isDuplicated = influxReader.isDuplicated(clientDataList.first().id!!)
 //            인증/비인증  사용자의  사용량과  시간을  넣어주세요
 //            일별로  데이터를  넣어주세요
-            //    "recentDeviceConnection": "Wireless",
-// "status": "Offline",
 
             val totalCount = clientDataList.size
             val authenticationCount = clientDataList.filter { it.user != null }.size
@@ -48,9 +49,11 @@ class CountItemWriter(
             val offlineCount = clientDataList.filter { it.status == "Offline" }.size
             val wirelessCount = clientDataList.filter { it.recentDeviceConnection == "Wireless" }.size
             val wiredCount = clientDataList.filter { it.recentDeviceConnection == "Wired" }.size
+
+
             val point = Point
-                .measurement("usage_data")
-                .addTag("id", clientDataList.random().id)
+                .measurement("count_statistics")
+                .addTag("id", clientDataList.first().id)
                 .addField("authenticationCount", authenticationCount)
                 .addField("nonAuthenticationCount", nonAuthenticationCount)
                 .addField("total", totalCount)
@@ -61,13 +64,15 @@ class CountItemWriter(
                 .addField("offlineCount", offlineCount)
                 .addField("wirelessCount", wirelessCount)
                 .addField("wiredCount", wiredCount)
-                .time(Instant.parse(clientDataList.random().lastSeen ?: LocalDateTime.now().toString()), WritePrecision.MS)
-            writeApi.writePoint(point)
-            logger.info(
-                "batch id: ${clientDataList.first().id}, totalCount: $totalCount, authenticationCount: $authenticationCount, nonAuthenticationCount: $nonAuthenticationCount, usage: $totalUsage \n" +
-                    "authenticationUsage: $authenticationUsage, nonAuthenticationUsage: $nonAuthenticationUsage",
-            )
-
+                .time(Instant.parse(clientDataList.first().lastSeen ?: LocalDateTime.now().toString()), WritePrecision.MS)
+                //pass
+                if(isDuplicated){
+                    writeApi.writePoint(point)
+                    logger.info(
+                        "batch id: ${clientDataList.first().id}, totalCount: $totalCount, authenticationCount: $authenticationCount, nonAuthenticationCount: $nonAuthenticationCount, usage: $totalUsage \n" +
+                            "authenticationUsage: $authenticationUsage, nonAuthenticationUsage: $nonAuthenticationUsage",
+                    )
+                }
             // 모든 비동기 작업이 완료될 때까지 대기
             // 클라이언트를 닫습니다.
             client.close()

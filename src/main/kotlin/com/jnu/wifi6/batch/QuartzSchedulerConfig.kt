@@ -16,6 +16,7 @@ class QuartzSchedulerConfig(
     val influxProperties: InfluxProperties,
     val jobBuilderFactory: JobBuilderFactory,
     val stepBuilderFactory: StepBuilderFactory,
+    val influxReader: InfluxReader
 ) {
     private final val CUSTOM_READER_JOB = "CUSTOM_READER_JOB"
     private final val CUSTOM_READER_JOB_STEP = CUSTOM_READER_JOB + "_STEP"
@@ -53,6 +54,6 @@ class QuartzSchedulerConfig(
     @Bean
     @StepScope
     fun countWriter(): ItemWriter<List<ClientData>> {
-        return CountItemWriter(influxProperties)
+        return CountItemWriter(influxProperties, influxReader)
     }
 }
