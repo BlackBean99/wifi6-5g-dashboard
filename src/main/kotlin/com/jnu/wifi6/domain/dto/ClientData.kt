@@ -17,6 +17,7 @@ data class ClientData(
     val ssid: String?,
     val status: String?,
     val usage: Usage?,
+
     /**
      eduroam 접속자
      @sample

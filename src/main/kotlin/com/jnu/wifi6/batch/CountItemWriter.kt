@@ -34,12 +34,20 @@ class CountItemWriter(
             val writeApi = client.getWriteKotlinApi()
 //            인증/비인증  사용자의  사용량과  시간을  넣어주세요
 //            일별로  데이터를  넣어주세요
+            //    "recentDeviceConnection": "Wireless",
+//"status": "Offline",
+
             val totalCount = clientDataList.size
             val authenticationCount = clientDataList.filter { it.user != null }.size
             val nonAuthenticationCount = clientDataList.filter { it.user == null }.size
             val authenticationUsage = clientDataList.filter { it.user != null }.map { it.usage?.total ?: 0 }.sum()
             val nonAuthenticationUsage = clientDataList.filter { it.user == null }.map { it.usage?.total ?: 0 }.sum()
             val totalUsage = clientDataList.map { it.usage?.total ?: 0 }.sum()
+
+            val onlineCount = clientDataList.filter { it.status == "Online" }.size
+            val offlineCount = clientDataList.filter { it.status == "Offline" }.size
+            val wirelessCount = clientDataList.filter { it.recentDeviceConnection == "Wireless" }.size
+            val wiredCount = clientDataList.filter { it.recentDeviceConnection == "Wired" }.size
             val point = Point
                 .measurement("usage_data")
                 .addTag("id", clientDataList.random().id)
@@ -49,6 +57,10 @@ class CountItemWriter(
                 .addField("authenticationUsage", authenticationUsage)
                 .addField("nonAuthenticationUsage", nonAuthenticationUsage)
                 .addField("usage", totalUsage)
+                .addField("onlineCount", onlineCount)
+                .addField("offlineCount", offlineCount)
+                .addField("wirelessCount", wirelessCount)
+                .addField("wiredCount", wiredCount)
                 .time(Instant.parse(clientDataList.random().lastSeen ?: LocalDateTime.now().toString()), WritePrecision.MS)
             writeApi.writePoint(point)
             logger.info(
