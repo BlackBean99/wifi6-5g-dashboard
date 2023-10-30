@@ -38,5 +38,4 @@ class SimpleJobScheduler(
             logger.error(e.localizedMessage)
         }
     }
-
 }

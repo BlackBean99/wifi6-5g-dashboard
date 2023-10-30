@@ -10,7 +10,6 @@ import org.springframework.batch.item.ItemWriter
 import org.springframework.stereotype.Component
 import java.time.Instant
 import java.time.LocalDateTime
-import kotlin.math.log
 
 @Component
 class CountItemWriter(
@@ -52,8 +51,10 @@ class CountItemWriter(
                 .addField("usage", totalUsage)
                 .time(Instant.parse(clientDataList.random().lastSeen ?: LocalDateTime.now().toString()), WritePrecision.MS)
             writeApi.writePoint(point)
-            logger.info("batch id: ${clientDataList.first().id}, totalCount: $totalCount, authenticationCount: $authenticationCount, nonAuthenticationCount: $nonAuthenticationCount, usage: $totalUsage \n" +
-                    "authenticationUsage: $authenticationUsage, nonAuthenticationUsage: $nonAuthenticationUsage")
+            logger.info(
+                "batch id: ${clientDataList.first().id}, totalCount: $totalCount, authenticationCount: $authenticationCount, nonAuthenticationCount: $nonAuthenticationCount, usage: $totalUsage \n" +
+                    "authenticationUsage: $authenticationUsage, nonAuthenticationUsage: $nonAuthenticationUsage",
+            )
 
             // 모든 비동기 작업이 완료될 때까지 대기
             // 클라이언트를 닫습니다.
