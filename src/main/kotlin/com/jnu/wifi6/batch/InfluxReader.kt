@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component
 @Component
 class InfluxReader(
     val influxProperties: InfluxProperties,
-    ) {
+) {
 
-    fun isDuplicated(id: String) :Boolean{
+    fun isDuplicated(id: String): Boolean {
         val client = InfluxDBClientKotlinFactory.create(
             "http://" + influxProperties.properties.url,
             influxProperties.properties.token.toCharArray(),
@@ -18,14 +18,13 @@ class InfluxReader(
         )
         val readApi = client.getQueryKotlinApi()
         return !readApi.query(
-                "from(bucket: \"${influxProperties.properties.bucket}\")\n" +
-                        "  |> range(start: -1d)\n" +
-                        "  |> filter(fn: (r) => r[\"_measurement\"] == \"count_statistics\")\n" +
-                        "  |> filter(fn: (r) => r[\"_field\"] == \"usageTotal\")\n" +
-                        "  |> filter(fn: (r) => r[\"id\"] == \"${id}\")\n" +
-                        "  |> aggregateWindow(every: 1d, fn: mean, createEmpty: false)\n" +
-                        "  |> yield(name: \"mean\")"
+            "from(bucket: \"${influxProperties.properties.bucket}\")\n" +
+                "  |> range(start: -1d)\n" +
+                "  |> filter(fn: (r) => r[\"_measurement\"] == \"count_statistics\")\n" +
+                "  |> filter(fn: (r) => r[\"_field\"] == \"usageTotal\")\n" +
+                "  |> filter(fn: (r) => r[\"id\"] == \"${id}\")\n" +
+                "  |> aggregateWindow(every: 1d, fn: mean, createEmpty: false)\n" +
+                "  |> yield(name: \"mean\")",
         ).isEmpty
     }
 }
-

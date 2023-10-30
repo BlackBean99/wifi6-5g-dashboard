@@ -50,7 +50,6 @@ class CountItemWriter(
             val wirelessCount = clientDataList.filter { it.recentDeviceConnection == "Wireless" }.size
             val wiredCount = clientDataList.filter { it.recentDeviceConnection == "Wired" }.size
 
-
             val point = Point
                 .measurement("count_statistics")
                 .addTag("id", clientDataList.first().id)
@@ -65,14 +64,14 @@ class CountItemWriter(
                 .addField("wirelessCount", wirelessCount)
                 .addField("wiredCount", wiredCount)
                 .time(Instant.parse(clientDataList.first().lastSeen ?: LocalDateTime.now().toString()), WritePrecision.MS)
-                //pass
-                if(isDuplicated){
-                    writeApi.writePoint(point)
-                    logger.info(
-                        "batch id: ${clientDataList.first().id}, totalCount: $totalCount, authenticationCount: $authenticationCount, nonAuthenticationCount: $nonAuthenticationCount, usage: $totalUsage \n" +
-                            "authenticationUsage: $authenticationUsage, nonAuthenticationUsage: $nonAuthenticationUsage",
-                    )
-                }
+            // pass
+            if (isDuplicated) {
+                writeApi.writePoint(point)
+                logger.info(
+                    "batch id: ${clientDataList.first().id}, totalCount: $totalCount, authenticationCount: $authenticationCount, nonAuthenticationCount: $nonAuthenticationCount, usage: $totalUsage \n" +
+                        "authenticationUsage: $authenticationUsage, nonAuthenticationUsage: $nonAuthenticationUsage",
+                )
+            }
             // 모든 비동기 작업이 완료될 때까지 대기
             // 클라이언트를 닫습니다.
             client.close()
