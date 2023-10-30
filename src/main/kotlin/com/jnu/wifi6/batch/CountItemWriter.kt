@@ -35,7 +35,7 @@ class CountItemWriter(
 //            인증/비인증  사용자의  사용량과  시간을  넣어주세요
 //            일별로  데이터를  넣어주세요
             //    "recentDeviceConnection": "Wireless",
-//"status": "Offline",
+// "status": "Offline",
 
             val totalCount = clientDataList.size
             val authenticationCount = clientDataList.filter { it.user != null }.size
